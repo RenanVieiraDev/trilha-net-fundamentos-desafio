@@ -12,36 +12,41 @@ namespace DesafioFundamentos.Models
             this.precoPorHora = precoPorHora;
         }
 
-        public void AdicionarVeiculo()
+        public void AdicionarVeiculo() //Insere o veiculo na lista de carros estacionados
         {
-            // TODO: Pedir para o usuário digitar uma placa (ReadLine) e adicionar na lista "veiculos"
-            // *IMPLEMENTE AQUI*
-            Console.WriteLine("Digite a placa do veículo para estacionar:");
+            Console.Write("Digite a placa do veículo para estacionar:");
+            string carPlate  = Console.ReadLine();
+            this.veiculos.Add(carPlate);
         }
 
         public void RemoverVeiculo()
         {
-            Console.WriteLine("Digite a placa do veículo para remover:");
-
-            // Pedir para o usuário digitar a placa e armazenar na variável placa
-            // *IMPLEMENTE AQUI*
-            string placa = "";
+            Console.Write("Digite a placa do veículo para remover:");
+            string placa = Console.ReadLine();
 
             // Verifica se o veículo existe
             if (veiculos.Any(x => x.ToUpper() == placa.ToUpper()))
             {
-                Console.WriteLine("Digite a quantidade de horas que o veículo permaneceu estacionado:");
-
-                // TODO: Pedir para o usuário digitar a quantidade de horas que o veículo permaneceu estacionado,
-                // TODO: Realizar o seguinte cálculo: "precoInicial + precoPorHora * horas" para a variável valorTotal                
-                // *IMPLEMENTE AQUI*
-                int horas = 0;
-                decimal valorTotal = 0; 
-
-                // TODO: Remover a placa digitada da lista de veículos
-                // *IMPLEMENTE AQUI*
-
-                Console.WriteLine($"O veículo {placa} foi removido e o preço total foi de: R$ {valorTotal}");
+                bool validacaoFormatoHorasExiteWhile = true;
+                decimal horas = 0;
+                while (validacaoFormatoHorasExiteWhile)     //Verifica se o valor digitado realmente é numerico, só sai do laço se o numero for numerico.
+                {
+                    Console.Write("Digite a quantidade de horas que o veículo permaneceu estacionado:");
+                    string quantidadePermanencia = Console.ReadLine();
+                    bool validacaoHorasNumericas = decimal.TryParse(quantidadePermanencia, out var conversaoHoras);
+                    if (validacaoHorasNumericas)
+                    {
+                        validacaoFormatoHorasExiteWhile = false;
+                        horas = conversaoHoras;
+                    }
+                    else 
+                    {
+                        Console.WriteLine("Por favor, Digite um valor numerico!");
+                    }
+                }
+                Console.Clear();
+                this.veiculos.Remove(placa); //<< Remove o veiculo
+                Console.WriteLine($"O veículo {placa} foi removido e o preço total foi de: R$ {this.precoInicial + this.precoPorHora * horas}");
             }
             else
             {
@@ -49,14 +54,19 @@ namespace DesafioFundamentos.Models
             }
         }
 
-        public void ListarVeiculos()
+        public void ListarVeiculos() //Apresenta a lista completa de todos os veiculos estacionados
         {
             // Verifica se há veículos no estacionamento
-            if (veiculos.Any())
+            if (this.veiculos.Any())
             {
+                
                 Console.WriteLine("Os veículos estacionados são:");
-                // TODO: Realizar um laço de repetição, exibindo os veículos estacionados
-                // *IMPLEMENTE AQUI*
+                int countCar = 1;
+                foreach (var veiculo in this.veiculos)
+                {
+                    Console.WriteLine($"[{countCar}] PLACA: {veiculo}");
+                    countCar++;
+                }
             }
             else
             {
